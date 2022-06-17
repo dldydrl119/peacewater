@@ -1,0 +1,12 @@
+<IfModule authz_core_module>
+    Require all denied
+</IfModule>
+<IfModule !authz_core_module>
+    Deny from all
+</IfModule>
+php_flag session.auto_start 0
+#PHP_FLAG register_globals ON
+PHP_VALUE mysql.default_charset UTF8
+php_value magic_quotes_gpc 0
+php_flag_allow_url_open = ON
+

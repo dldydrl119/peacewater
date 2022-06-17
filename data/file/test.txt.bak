@@ -1,0 +1,75 @@
+public function bbsPressList($page = 1) {
+        $limit=10;
+        $offset=$limit*($page-1);
+        $sql="SELECT idx,thumbnail,title,reg_date,idxs from bbs_press ORDER BY idxs DESC
+              limit {$limit} offset {$offset}";
+        $result = $this->db->query($sql)->result();
+
+        $sql="SELECT COUNT(*) count FROM bbs_press";
+        $count = $this->db->query($sql)->row();
+
+        return array('return'=>true,'list'=>$result,'count'=>$count->count);
+    }
+
+    public function pressInsertData($insert_data) {
+
+        $sql="SELECT idxs FROM bbs_press order by idxs DESC LIMIT 1";
+        $obj_idxs = $this->db->query($sql)->row();
+        if( !$obj_idxs) {
+            $idxs = 1;
+        } else {
+            $idxs = $obj_idxs->idxs+1;
+        }
+        $insert_data['idxs'] = $idxs;
+        $result = $this->db->insert('bbs_press', $insert_data);
+        if($result) {
+            return array('return'=>true);
+        }
+        else {
+            return array('return'=>false);
+        }
+    }
+
+    public function pressData($idx) {
+        $sql="SELECT * FROM bbs_press WHERE idx = ?";
+        $array = array($idx);
+        return $this->db->query($sql, $array)->row();
+    }
+
+    public function pressUpdateData($update, $idx) {
+
+        $this->db->where('idx', $idx);
+        $result = $this->db->update('bbs_press', $update);
+
+        if($result) {
+            return array('return'=>true);
+        }
+        else {
+            return array('return'=>false);
+        }
+    }
+
+    public function pressCount() {
+        $sql="SELECT COUNT(*) count  FROM bbs_press";
+        return $this->db->query($sql)->row()->count;
+    }
+
+    public function pressOrder($idxs, $idx) {
+        for($i=0; $i<count($idxs); $i++) {
+            $sql= "UPDATE bbs_press SET idxs = ? WHERE idx = ?";
+            $array = array($idxs[$i], $idx[$i]);
+            $result = $this->db->query($sql, $array);
+        }
+        return array('return'=>$result);
+    }
+
+    public function pressDel($idx) {
+        $sql= "DELETE FROM bbs_press WHERE idx = ?";
+        $result = $this->db->query($sql, [$idx]);
+        if($result ) {
+            return array('return'=>true);
+        }
+        else {
+            return array('return'=>false);
+        }
+    }

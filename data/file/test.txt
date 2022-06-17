@@ -1,0 +1,35 @@
+function goods_js_page(page) {
+    var option = {
+        url : '/main/goodsPage/'+page,
+        async:false
+    };
+    option.type = "post";
+    option.contentType = false;
+    option.processData = false;
+
+    $.ajax(
+        option
+    ).done(function(data){
+        console.log(data);
+
+        var html = '';
+        var obj = jQuery.parseJSON( data)
+        var number = obj.goods_number;
+        $.each(obj.goods,function(index, item){
+            html = html+ '<tr class="goods-tr">';
+            html = html+ '<td>' + number +'</td>';
+            html = html+ '<td>' + item.name +'</td>';
+            html = html+ '<td>' + item.school +'</td>';
+            html = html+ '<td>' + item.family +'</td>';
+            html = html+ '<td>' + item.give_money +'</td>';
+            html = html+ '</tr>';
+            number = number-1;
+        });
+        $('.goods-tr').remove();
+        $('#goods_table').append(html);
+
+        $('#goods_paging').empty();
+        $('#goods_paging').append(obj.goods_page);
+    });
+
+}
