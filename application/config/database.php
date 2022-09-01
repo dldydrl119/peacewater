@@ -76,9 +76,9 @@ $query_builder = TRUE;
 $db['default'] = array(
     'dsn'	=> 'mysql:host=localhost;dbname=peacewater',
     'hostname' => 'localhost',
-    'username' => 'peacewater',
-    'password' => 'tree!@0506',
-    'database' => 'peacewater',
+    'username' => '',
+    'password' => '',
+    'database' => '',
     'dbdriver' => 'pdo',
     'dbprefix' => '',
     'pconnect' => FALSE,
